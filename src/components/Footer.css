@@ -1,0 +1,48 @@
+.footer{
+    background: linear-gradient(180deg,#9b008f,#7a006d);
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.footer h2{
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.contact{
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.icon{
+    margin-right: 10px;
+}
+
+.footer h3{
+    margin-top: 25px;
+}
+
+.social{
+    margin-top: 10px;
+    font-size: 26px;
+}
+
+.social svg{
+    margin: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.social svg:hover{
+    transform: scale(1.2);
+}
+
+.bottom{
+    margin-top: 25px;
+    font-size: 16px;
+}
+
+.bottom span{
+    color: red;
+}
