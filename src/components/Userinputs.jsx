@@ -1,4 +1,4 @@
-import React from 'react'
+import React,  { useState } from 'react'
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -10,11 +10,16 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import jobTypes from '../assets/jobRole.json'
+import skillJSON from '../assets/jobSkills.json'
+import summaryJSON from '../assets/summaries.json'
 const steps = ['Basic Informations', 'Contact Details', 'Educational Details','Review & Submit'];
-function Userinputs() {
+function Userinputs({resumeData, setResumeData}) {
    const [activeStep, setActiveStep] = React.useState(0);
-
+ 
+   console.log(resumeData);
+  
+  
   const handleNext = () => {
    
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -23,25 +28,34 @@ function Userinputs() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
- 
+  
+  const generateAI=()=>{
+    setResumeData({...resumeData,
+      skills:skillJSON[resumeData.job],
+      summary:summaryJSON[resumeData.job],
+    })
+    handleNext()
+  }
+  
   const renderStepContent=(stepCount)=>{
     switch(stepCount){
         case 0: return(
             <div>
                 <h3>Personal details</h3>
                 <div className="p-3 row">
-                    <TextField id="standard-basic-name" label="Full Name" variant="standard" />
-                    <TextField id="standard-basic-loc" label="Location" variant="standard" />
+                    <TextField value={resumeData.fullName} onChange={e=>setResumeData({...resumeData,fullName:e.target.value})} id="standard-basic-name" label="Full Name" variant="standard" />
+                    <TextField value={resumeData.location} onChange={e=>setResumeData({...resumeData,location:e.target.value})} id="standard-basic-loc" label="Location" variant="standard" />
                      <FormControl variant="standard">
         <InputLabel id="demo-simple-select-standard-label">Choose Job Title</InputLabel>
-        <Select
+        <Select onChange={e=>setResumeData({...resumeData,job:e.target.value})} defaultValue={''}
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          label="Age"
+          label="job"
         >
+          {
+            jobTypes.jobRoles.map(role=>(<MenuItem key={role} value={role}>{role}</MenuItem>))
           
-          <MenuItem value={10}>Ten</MenuItem>
+    }
          
         </Select>
       </FormControl>
@@ -52,10 +66,10 @@ function Userinputs() {
             <div>
                 <h3>Contact details</h3>
                 <div className="p-3 row">
-                    <TextField id="standard-basic-email" label="Email" variant="standard" />
-                    <TextField id="standard-basic-phone" label="Phone" variant="standard" />
-                     <TextField id="standard-basic-linkedin" label="Linkedin" variant="standard" />
-                      <TextField id="standard-basic-github" label="Github" variant="standard" />
+                    <TextField value={resumeData.email}  onChange={e=>setResumeData({...resumeData,email:e.target.value})} id="standard-basic-email" label="Email" variant="standard" />
+                    <TextField value={resumeData.phone}  onChange={e=>setResumeData({...resumeData,phone:e.target.value})} id="standard-basic-phone" label="Phone" variant="standard" />
+                     <TextField value={resumeData.linkedin}  onChange={e=>setResumeData({...resumeData,linkedin:e.target.value})} id="standard-basic-linkedin" label="Linkedin" variant="standard" />
+                      <TextField value={resumeData.github}  onChange={e=>setResumeData({...resumeData,github:e.target.value})} id="standard-basic-github" label="Github" variant="standard" />
                    
                 </div>
             </div>
@@ -64,9 +78,9 @@ function Userinputs() {
             <div>
                 <h3>Educational details</h3>
                 <div className="p-3 row">
-                    <TextField id="standard-basic-degree" label="Bachelor's degree" variant="standard" />
-                    <TextField id="standard-basic-college" label="University/college name" variant="standard" />
-                     <TextField id="standard-basic-yog" label="Year of Graduation" variant="standard" />
+                    <TextField value={resumeData.degree}  onChange={e=>setResumeData({...resumeData,degree:e.target.value})} id="standard-basic-degree" label="Bachelor's degree" variant="standard" />
+                    <TextField value={resumeData.university} onChange={e=>setResumeData({...resumeData,university:e.target.value})} id="standard-basic-college" label="University/college name" variant="standard" />
+                     <TextField value={resumeData.passOut}  onChange={e=>setResumeData({...resumeData,passOut:e.target.value})} id="standard-basic-yog" label="Year of Graduation" variant="standard" />
                    
                 </div>
             </div>
@@ -98,7 +112,7 @@ function Userinputs() {
       {activeStep === steps.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+            All steps completed 
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
@@ -125,7 +139,7 @@ function Userinputs() {
             
            {
             activeStep=== steps.length-1?
-            <Button>Generate AI Skills and Summary</Button>
+            <Button onClick={generateAI}>Generate AI Skills and Summary</Button>
             :
             <Button onClick={handleNext}>Next</Button>
            }
